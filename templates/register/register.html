@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  Esa to jest logowanie
+    <div id="app"></div>
+    <button id="sendButton">Send Data</button>
+    <form method="POST" action="{% url 'register' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button>Submit</button>
+    </form>
+</body>
+<script>
+   var socket = new WebSocket('ws://localhost:8000/ws/some_url');
+   socket.onopen = (event) =>{
+        console.log("Połaczenie jest aktywne");
+   }
+
+   var button = document.getElementById("sendButton");
+   button.addEventListener('click', result = () =>{
+       socket.send(
+           JSON.stringify({
+               message: 'Hello from client'
+           }))
+   })
+
+    socket.onmessage = (event) =>{
+        var data = JSON.parse(event.data);
+        console.log(data);
+        document.querySelector('#app').innerHTML = data.message;
+    }
+    socket.onerror = (error) =>{
+        console.log(error);
+    }
+
+</script>
+</html>

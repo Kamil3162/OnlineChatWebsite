@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&family=Pathway+Extreme:wght@100&family=Wix+Madefor+Text&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@500&display=swap');
+body{
+    background-color: #111111;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+div.all-components{
+    height: 100%;
+    display: flex;
+}
+div.left-sidebar{
+    width: 12%;
+    text-align: center;
+}
+div.right-sidebar{
+    width: 20%;
+}
+div.content{
+    background-color: #21242b;
+    border-radius: 15px;
+    width: 1000px;
+}
+div.icon-control{
+    display: block;
+}
+div.icon{
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    height: 20px;
+    width: 60px;
+    padding: 10px;
+    margin-left: 30px;
+    margin-bottom: 60px;
+    text-decoration: none;
+}
+div.icon:hover{
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    background-color: #6f80b9;
+    box-shadow: 1px 2px 13px 4px white;
+}
+#logo{
+    font-family: 'Kanit', sans-serif;
+    font-size: 30px;
+    color: rgb(255, 255, 255);
+    margin-top: 10px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 60px;
+}
+.title-format{
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+.title{
+    margin-top: 15px;
+    font-size: 35px;
+    font-family: 'DM Sans', sans-serif;
+    color: white;
+}
+div.photo-title {
+    background-image: url("photos/photo-entry.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 75%; /* Set the desired width */
+    height: 55%; /* Set the desired height */
+    border-radius: 15px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.story-title{
+    font-family: 'Libre Franklin', sans-serif;
+    color: white;
+    font-size: 17px;
+    font-weight: 400;
+}
+#targets p{
+    margin-top: 0px;
+    white-space: pre-line;
+    text-align: left;
+    font-family: 'Dosis', sans-serif;
+    font-weight: 400;
+}
+#targets h3{
+    margin-bottom: 0px;
+}
+
+div.chat-window {
+    height: 300px; /* Adjust the height as needed */
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+}

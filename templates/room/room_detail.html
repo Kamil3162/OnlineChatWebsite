@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div>
+<link rel="stylesheet" href="{% static 'global.css' %}">
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Pass</button>
+        </form>
+    </div>
+    <div class="chat-window">
+        {{ information }}
+        {% for message in messages %}
+        {{ message.message_content }}<br/>
+        {% endfor %}
+        <div id="messages-container">
+            <!-- Chat messages will be dynamically added here -->
+        </div>
+    </div>
+    <div>
+        <form id="message-form">
+            <input type="text" id="message-input">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        var url = window.location.href;
+        var parts = url.split('/');
+        const room_id = parts[parts.length - 2];
+        var userId = "{{ user_id | escape }}";
+        var socket = new WebSocket(`ws://localhost:8000/ws/server-url/${room_id}/`);
+
+        socket.onmessage = function (e) {
+            let data = JSON.parse(e.data);
+            const messageContainer = document.getElementById('messages-container');
+            messageContainer.insertAdjacentHTML('beforeend', `<div><p>${data.message}</p></div>`);
+            console.log(data);
+        };
+
+        document.querySelector('#message-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+            var inputField = document.querySelector("#message-input");
+            var message = inputField.value;
+            console.log(message);
+
+            socket.send(JSON.stringify({
+                message: message,
+                room_id: room_id,
+                user_id: userId
+            }));
+
+            inputField.value = '';
+        });
+
+        socket.onerror = function (error) {
+            console.log(error);
+        };
+    </script>
+</div>
+
+{% endblock %}

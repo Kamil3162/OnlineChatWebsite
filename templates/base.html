@@ -1,0 +1,62 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="static/global.css">
+    <link rel="stylesheet" href="static/right-sidebar.css">
+</head>
+<body>
+    <div class="all-components">
+        <div class="left-sidebar">
+            <div id="logo">
+                KH
+                {% if request.session.username %}
+                <p>Witaj {{ request.session.username }}</p>
+                    <a href="{% url 'logout' %}">
+                <button>Wyloguj</button>
+            </a>
+                {% endif %}
+            </div>
+            <div class="icon-control">
+                <div class="icon">
+                    <a href="{% url 'index' %}">Home</a>
+                </div>
+                <div class="icon">
+                    <a href="{% url 'room_list' %}">Chats</a>
+                </div>
+                <div class="icon">
+                    <a href="{% url 'room_create' %}">Chat create</a>
+                </div>
+                <div class="icon">
+                    Blog
+                </div>
+
+            </div>
+        </div>
+        <div class="content">
+            {% block room_create %}
+            {% block content %}
+            {% block chats %}
+                {% include 'entry_page.html' %}
+            {% endblock %}
+            {% endblock %}
+
+            {% endblock %}
+        </div>
+        <div class="right-sidebar">
+            <div class="bubble left">Bro ipsum dolor sit amet gaper backside single track, manny Bike epic clipless. Schraeder drop gondy, rail fatty slash gear jammer steeps</div>
+            <div class="bubble right">Ok, Thank you</div>
+            <div class="bubble left"> ut labore et dolore magna </div>
+            <div class="bubble right">👌</div>
+        </div>
+    </div>
+
+</body>
+    <script>
+        var socket = new WebSocket('url');
+        socket.onmessage;
+        socket.onerror;
+
+    </script>
+</html>

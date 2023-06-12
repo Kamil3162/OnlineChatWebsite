@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block display_chats %}
+<link rel="stylesheet" href="static/chat-display.css">
+<div class="chat-messages-container">
+   <div class="chats">
+       {% block chats %}
+       {% include 'room/all_rooms.html' %}
+       {% endblock %}
+   </div>
+   <div class="chat-messages">
+        {% block chat_room %}
+            naura naura
+        {% endblock %}
+   </div>
+</div>
+{% endblock %}

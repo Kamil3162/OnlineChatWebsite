@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block chats %}
+<link rel="stylesheet" href="{% static 'chat-display.css' %}">
+<div class="rooms">
+    {% for room in all_rooms %}
+    <div>{{ room.name }}</div>
+    <br/>
+    <div>{{ room.pk }}</div>
+    <br/>
+    <div>{{ room.actual_logged_users }}   </div>
+    <br/>
+    <div>    {{ room.maximum_user }}</div>
+    <a href="{% url 'room_detail' room.pk %}">
+        <button>Join</button>
+    </a>
+    <div>
+
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
