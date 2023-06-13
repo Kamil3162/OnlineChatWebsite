@@ -12,7 +12,7 @@ body{
 div.login-container{
     /*background: linear-gradient(to left, #f0eded, #959596);*/
     background-color: white;
-    width: 800px;
+    width: 1000px;
     height: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -20,7 +20,7 @@ div.login-container{
     margin-bottom: auto;
     border-bottom: 15px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
 }
 .login-input{
     padding: 20px;
@@ -62,9 +62,36 @@ div.login-container{
 .login-input button{
     background: linear-gradient(to left, #58c0ea, #043fd0);
     width: 260px;
-    height: 40px;
-    font-family: 'Kanit', sans-serif;
+    height: 35px;
+    color: #fefefe;
+    font-size: 20px;
+    border-radius: 20px;
+    font-family: 'Kulim Park', sans-serif;
+    font-weight: 600;
+    border: none;
+}
+.login-photo {
+    position: relative;
+    padding: 20px;
+}
+
+.login-photo p {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: white;
     font-size: 20px;
+    font-weight: bold;
+    width: 80%;
+    height: 10%;
+    border-radius: 15px;
+    padding: 5px;
+    background-color: rgba(0,0,0,0.2);
+    font-family: 'M PLUS 2', sans-serif;
+    margin-top: 10px;
+}
+
+.login-photo img {
     border-radius: 20px;
 }
