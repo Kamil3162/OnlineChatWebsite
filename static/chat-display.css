@@ -1,4 +1,5 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Dosis:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100&display=swap');
 div.chat-messages-container{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -41,4 +42,49 @@ div.rooms{
 .wave svg {
   position: relative;
   z-index: 1;
+}
+.room-create-form{
+  margin: 20px;
+}
+.room-create-form button{
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0b0b0b, #222727) border-box;
+  font-family: 'Libre Franklin', sans-serif;
+  font-weight: 1000;
+  padding: 10px;
+  width: 120px;
+  color: white;
+  transition: width 2s;
+  text-align: center;
+  margin-left: 170px;
+}
+.room-create-form label{
+  color: white;
+  font-family: 'Comfortaa', cursive;
+}
+#input-data input{
+  height: 35px;
+  border-bottom: 1px solid white;
+  background-color: inherit;
+  border-left: 0;
+  border-right: 0;
+}
+.room-create-form p{
+  color: white;
+  font-family: 'Public Sans', sans-serif;
+  font-weight: 1000;
+  font-size: 40px;
+}
+.input-room-container{
+  display: flex;
+  margin: 10px;
+}
+.input-room-container label{
+  margin-top: 10px;
+}
+input[name="password"]{
+  margin-left:30px;
+}
+input[name="name"]{
+  margin-left:60px;
 }

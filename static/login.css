@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Telugu&family=Solway:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kulim+Park:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300&family=Pathway+Extreme:wght@100&family=Wix+Madefor+Text&display=swap');
+
+body{
+    background-color: whitesmoke;
+    height:100vh; /* vh = Vertical Height */
+}
+
+div.login-container{
+    /*background: linear-gradient(to left, #f0eded, #959596);*/
+    background-color: white;
+    width: 800px;
+    height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    margin-bottom: auto;
+    border-bottom: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.login-input{
+    padding: 20px;
+    display: block;
+}
+.login-input h1{
+    text-align: left;
+    color: #21242b;
+    font-size: 30px;
+    font-weight: 600px;
+    font-family: 'Spline Sans', sans-serif;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+.login-input p{
+    text-align: left;
+    font-size: 20px;
+    font-weight: 600px;
+    color: black;
+    font-family: 'M PLUS 2', sans-serif;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+.login-input label{
+    color: #0b1631;
+    font-family: 'Kulim Park', sans-serif;
+    font-weight: 600;
+}
+.login-input input{
+    padding: 5px;
+    height: 30px;
+    width: 260px;
+    border: 2px solid transparent;
+    border-image: linear-gradient(to left, #58c0ea, #043fd0) 1;
+    border-image-slice: 1;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+.login-input button{
+    background: linear-gradient(to left, #58c0ea, #043fd0);
+    width: 260px;
+    height: 40px;
+    font-family: 'Kanit', sans-serif;
+    color: white;
+    font-size: 20px;
+    border-radius: 20px;
+}

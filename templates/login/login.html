@@ -1,15 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'login.css' %}">
 </head>
 <body>
-    <h1>Login</h1>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Login</button>
-    </form>
+    <div class="login-container">
+        <div class="login-input">
+            <form method="post">
+                <h1>Login</h1>
+                <p>Login to one of the best chats</p>
+                {% csrf_token %}
+                <label>{{ form.username.label }}*</label>
+                <br>
+                {{ form.username }}
+                <br>
+                <label>{{ form.password.label }}*</label>
+                <br>
+                {{ form.password }}
+                <br>
+                <button id="btn-login" type="submit">Login</button>
+            </form>
+        </div>
+        <div class="login-photo">
+            esa
+        </div>
+    </div>
 </body>
 </html>

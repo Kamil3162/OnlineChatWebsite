@@ -36,7 +36,10 @@
         socket.onmessage = function (e) {
             let data = JSON.parse(e.data);
             const messageContainer = document.getElementById('messages-container');
-            messageContainer.insertAdjacentHTML('beforeend', `<div><p>${data.message}</p></div>`);
+            messageContainer.insertAdjacentHTML('beforeend',
+                    `<div class="message-container">
+                        <p>${data.message}</p>
+                    </div>`);
             console.log(data);
         };
 
