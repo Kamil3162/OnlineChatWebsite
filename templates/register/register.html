@@ -1,41 +1,32 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'login.css' %}">
 </head>
 <body>
-  Esa to jest logowanie
-    <div id="app"></div>
-    <button id="sendButton">Send Data</button>
-    <form method="POST" action="{% url 'register' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button>Submit</button>
-    </form>
+    <div class="login-container">
+        <div class="login-input">
+            <h1>Rejestracja</h1>
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                    <label>{{ field.label }}*</label>
+                    <br>
+                    {{ field }}
+                    <br>
+                {% endfor %}
+                <button id="btn-login" type="submit">Register</button>
+            </form>
+        </div>
+        <div class="login-photo">
+            <p>Join to us and enjoy conversation with your best friends</p>
+            <img src="/static/photos/chat_people_tech_talk_communication-18876.jpg">
+        </div>
+    </div>
 </body>
 <script>
-   var socket = new WebSocket('ws://localhost:8000/ws/some_url');
-   socket.onopen = (event) =>{
-        console.log("Połaczenie jest aktywne");
-   }
-
-   var button = document.getElementById("sendButton");
-   button.addEventListener('click', result = () =>{
-       socket.send(
-           JSON.stringify({
-               message: 'Hello from client'
-           }))
-   })
-
-    socket.onmessage = (event) =>{
-        var data = JSON.parse(event.data);
-        console.log(data);
-        document.querySelector('#app').innerHTML = data.message;
-    }
-    socket.onerror = (error) =>{
-        console.log(error);
-    }
-
 </script>
 </html>

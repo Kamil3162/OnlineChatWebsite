@@ -33,3 +33,6 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.is_admin = True
         return user
+
+    def change_user_permissions(self, UserApp:User, permisions):
+        pass

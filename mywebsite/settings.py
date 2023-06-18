@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'chat',
+    'blog'
 ]
 
 ASGI_APPLICATION = 'mywebsite.asgi.application'

@@ -60,11 +60,11 @@ div.login-container{
     margin-bottom: 15px;
 }
 .login-input button{
-    background: linear-gradient(to left, #58c0ea, #043fd0);
+    background: linear-gradient(to right, #58c0ea, #043fd0);
     width: 260px;
     height: 35px;
     color: #fefefe;
-    font-size: 20px;
+    font-size: 17px;
     border-radius: 20px;
     font-family: 'Kulim Park', sans-serif;
     font-weight: 600;

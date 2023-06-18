@@ -3,6 +3,7 @@ from django import forms
 from . import models
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password, check_password
+
 class RegisterForm(forms.ModelForm):
     class Meta:
         model = models.UserApp

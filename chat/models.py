@@ -20,25 +20,25 @@ class Room(models.Model):
     # room_image = models.ImageField(upload_to='media', null=True, blank=True)
 
     def add_user(self):
-        try:
-            if self.actual_logged_users < self.maximum_user:
-                self.actual_logged_users += 1
-            else:
-                raise Exception("Your room users reached")
-        except Exception as e:
-            print(f"Error {str(e)}")
+        if self.actual_logged_users < self.maximum_user:
+            self.actual_logged_users += 1
+        else:
+            raise Exception("Your room users reached")
+        self.save()
 
     def remove_user(self):
-        try:
-            if self.actual_logged_users > 0:
-                self.actual_logged_users -= 1
-            else:
-                raise Exception("You can remove user")
-        except Exception as e:
-            print(f"Error {str(e)}")
+        if self.actual_logged_users > 0:
+            self.actual_logged_users -= 1
+        else:
+            raise Exception("You can't remove user, cant minus from 0")
+        self.save()
 
     def __str__(self):
-        return f"room{self.id}"
+        return f"Room {self.id}"
+
+    def __repr__(self):
+        return f"Room, name:{self.name} maximum_user:{self.maximum_user}" \
+               f" actual_logged_users:{self.actual_logged_users}, password:{self.password}"
 
 
 class UserApp(AbstractBaseUser, PermissionsMixin):
