@@ -1,6 +1,4 @@
 from django.contrib.auth.models import BaseUserManager
-
-
 class UserManager(BaseUserManager):
 
     def create_user(self, nickname, username, surname, password, email_address):
@@ -34,5 +32,5 @@ class UserManager(BaseUserManager):
         user.is_admin = True
         return user
 
-    def change_user_permissions(self, UserApp:User, permisions):
+    def change_user_permissions(self, User, permisions):
         pass
