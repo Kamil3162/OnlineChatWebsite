@@ -1,4 +1,5 @@
 from django.contrib.auth.models import BaseUserManager
+from django.db import models, IntegrityError
 class UserManager(BaseUserManager):
 
     def create_user(self, nickname, username, surname, password, email_address):
@@ -34,3 +35,8 @@ class UserManager(BaseUserManager):
 
     def change_user_permissions(self, User, permisions):
         pass
+
+class RoomManager(models.Manager):
+    def create(self, *args, **kwargs):
+        super(RoomManager, self).create(*args, **kwargs)
+

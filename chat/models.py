@@ -9,15 +9,21 @@ from django.core.validators import (
     MinValueValidator,
     MaxValueValidator
 )
-from .manager import UserManager
+from .manager import UserManager, RoomManager
+from django.db import IntegrityError
 
 class Room(models.Model):
     name = models.CharField(max_length=70)
-    maximum_user = models.IntegerField(validators=[MaxValueValidator(15)],
-                                       default=0)
+    maximum_user = models.IntegerField(validators=[MaxValueValidator(15)], default=0)
     actual_logged_users = models.IntegerField(default=0)
     password = models.CharField(max_length=200)
-    # room_image = models.ImageField(upload_to='media', null=True, blank=True)
+    objects = RoomManager()
+    @classmethod
+    def create_room(self, *args, **kwargs):
+        similar_rooms = Room.objects.filter(name=self.name).exists()
+        if similar_rooms:
+            raise IntegrityError("You can't duplicate data in the database")
+        self.objects.create(*args, **kwargs)
 
     def add_user(self):
         if self.actual_logged_users < self.maximum_user:

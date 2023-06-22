@@ -1,6 +1,6 @@
 import random
 import string
-
+from django.db import IntegrityError
 from django.test import TestCase
 from django.contrib.auth.hashers import make_password, check_password
 from .models import Room
@@ -12,13 +12,9 @@ class RoomTestCase(TestCase):
         cls.room = Room.objects.create(
             name='test',
             maximum_user=15,
-            actual_logged_users=0
+            actual_logged_users=0,
+            password="test"
         )
-        cls.password = 'test'
-        cls.hashed_password = make_password(cls.password)
-        cls.room.password = cls.hashed_password
-
-
 
     def test_password_hashing(self):
         letters = string.ascii_letters
@@ -66,3 +62,16 @@ class RoomTestCase(TestCase):
         actual_repr = repr(self.room)
 
         self.assertEqual(expected_repr, actual_repr, "The __repr__ method should return the expected string representation.")
+
+    def test_create_same_rooms(self):
+        room_data = {
+            'name': 'test',
+            'maximum_user': 15,
+            'actual_logged_users': 0,
+            'password': 'test'
+        }
+
+        with self.assertRaises(IntegrityError):
+            room = Room.create_room(**room_data)
+            room.full_clean()
+

@@ -14,6 +14,13 @@ class UserAppTestCase(TestCase):
             password="test1231dA",
             email_address="testData@testowy.com",
         )
+        cls.user_data = {
+            "nickname": "testsave",
+            "username": "testsave",
+            "surname": "testsave",
+            "password": "testsave",
+            "email_address": "test@testsave.com",
+        }
 
     def test_create_user(self):
         user = UserApp.objects.create_user(
@@ -99,14 +106,7 @@ class UserAppTestCase(TestCase):
         self.assertEqual(self.user.email_address, user_data.get('email_address'))
 
     def test_create_user_database(self):
-        user_data = {
-            "nickname": "testsave",
-            "username": "testsave",
-            "surname": "testsave",
-            "password": "testsave",
-            "email_address": "test@testsave.com",
-        }
-        user = UserApp.objects.create_user(**user_data)
+        user = UserApp.objects.create_user(**self.user_data)
 
         try:
             saved_user = UserApp.objects.get(pk=user.pk)
@@ -114,19 +114,21 @@ class UserAppTestCase(TestCase):
             self.fail("User was not saved in database")
 
     def test_proper_login(self):
-        self.client
+        user = UserApp.objects.create_user(
+            **self.user_data
+        )
+        response = self.client.post('/login', data={
+            'email_address': user.email_address,
+            'password': user.password
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(user.is_authenticated)
+
 
     def test_unique_email_field(self):
-        user_data = {
-            "nickname": "testsave",
-            "username": "testsave",
-            "surname": "testsave",
-            "password": "testsave",
-            "email_address": "test@testsave.com",
-        }
         # Create new user with our test data
-        user1 = UserApp.objects.create_user(**user_data)
+        user1 = UserApp.objects.create_user(**self.user_data)
         try:
-            user2 = UserApp.objects.create_user(**user_data)
+            user2 = UserApp.objects.create_user(**self.user_data)
         except IntegrityError:
             self.fail("Email address is a unique field")
