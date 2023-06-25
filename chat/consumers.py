@@ -15,10 +15,12 @@ class WSConsumer(AsyncWebsocketConsumer):
 
     async def connect(self, *args, **kwargs):
         room_id = self.scope['url_route']['kwargs']['pk']
-        self.room = await self.get_room(room_id)
+        print(self.scope)
+        print(room_id)
+        self.room = await self.get_room_name(room_id)
         print(self.room)
-        self.room_group_name = f'test'
-        self.room.add_user()
+        self.room_group_name = f'R{self.room.name}'
+        await self.room.add_user()
         # Add the user to the room group
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -29,16 +31,13 @@ class WSConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     @database_sync_to_async
-    def get_room(self, id):
+    def get_room_name(self, id):
         return models.Room.objects.get(pk=id)
 
     @database_sync_to_async
     def save_message(self, userid, roomid, message):
         try:
             user = models.UserApp.objects.get(pk=userid)
-
-            # Add the user to the room (assuming this method exists in your Room model)
-            self.room.add_user()
 
             # Create a new message object
             message_object = models.Message.objects.create(
@@ -73,11 +72,12 @@ class WSConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        self.room.remove_user()
+        await self.room.remove_user()
         await self.close()
 
     async def receive(self, text_data):
         print("dostałem wiadomosc")
+        print(text_data)
         text_data1 = json.loads(text_data)
         user_id = text_data1['user_id']
         room_id = text_data1['room_id']

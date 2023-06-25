@@ -96,8 +96,30 @@ div.photo-title {
 }
 
 div.chat-window {
-    height: 300px; /* Adjust the height as needed */
+    height: 600px; /* Adjust the height as needed */
     overflow-y: scroll;
     border: 1px solid #ccc;
     padding: 10px;
+}
+
+div.your-messages{
+    display: flex;
+    justify-content: flex-end;
+}
+
+div.others-messages{
+    display: flex;
+    justify-content: flex-start;
+
+}
+div.message-display{
+    background-color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    max-width: 350px;
+    max-height: 150px;
+    overflow: hidden;
+    word-wrap: break-word;
 }

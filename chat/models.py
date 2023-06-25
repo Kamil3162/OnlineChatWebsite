@@ -11,33 +11,41 @@ from django.core.validators import (
 )
 from .manager import UserManager, RoomManager
 from django.db import IntegrityError
-
+from channels.db import database_sync_to_async
 class Room(models.Model):
     name = models.CharField(max_length=70)
     maximum_user = models.IntegerField(validators=[MaxValueValidator(15)], default=0)
     actual_logged_users = models.IntegerField(default=0)
     password = models.CharField(max_length=200)
-    objects = RoomManager()
+    # objects = RoomManager()
+
     @classmethod
-    def create_room(self, *args, **kwargs):
-        similar_rooms = Room.objects.filter(name=self.name).exists()
+    def create_room(cls, *args, **kwargs):
+        print("esa")
+        similar_rooms = Room.objects.filter(name=kwargs['name']).exists()
         if similar_rooms:
             raise IntegrityError("You can't duplicate data in the database")
-        self.objects.create(*args, **kwargs)
+        print("wykonano")
+        cls.objects.create(*args, **kwargs)
 
-    def add_user(self):
+    async def add_user(self):
         if self.actual_logged_users < self.maximum_user:
             self.actual_logged_users += 1
         else:
             raise Exception("Your room users reached")
-        self.save()
+        await self.save_async()
 
-    def remove_user(self):
+    async def remove_user(self):
         if self.actual_logged_users > 0:
             self.actual_logged_users -= 1
         else:
             raise Exception("You can't remove user, cant minus from 0")
-        self.save()
+        await self.save_async()
+    @database_sync_to_async
+    def save_async(self, force_insert=False,
+                  force_update=False, using=None, update_fields=None):
+        return super().save(force_insert=False,
+                  force_update=False, using=None, update_fields=None)
 
     def __str__(self):
         return f"Room {self.id}"

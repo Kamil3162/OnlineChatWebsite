@@ -2,7 +2,8 @@
 {% load static %}
 {% block content %}
 <div>
-<link rel="stylesheet" href="{% static 'global.css' %}">
+    <link rel="stylesheet" href="{% static 'global.css' %}">
+    <link rel="stylesheet" href="{% static 'right-sidebar.css' %}">
     <div>
         <form method="post">
             {% csrf_token %}
@@ -13,7 +14,21 @@
     <div class="chat-window">
         {{ information }}
         {% for message in messages %}
-        {{ message.message_content }}<br/>
+            {% if message.sender_id == request.user.id %}
+                <div class="your-messages">
+                    <!-- {{ request.user.username}} -->
+                    <div class="message-display">
+                        {{ message.message_content }}<br/>
+                    </div>
+                </div>
+            {% else %}
+                <div class="others-messages">
+                    <!-- {{ request.user.username}} -->
+                    <div class="message-display">
+                        {{ message.message_content }}<br/>
+                    </div>
+                </div>
+            {% endif %}
         {% endfor %}
         <div id="messages-container">
             <!-- Chat messages will be dynamically added here -->

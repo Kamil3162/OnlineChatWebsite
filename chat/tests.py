@@ -15,7 +15,7 @@ class RoomTestCase(TestCase):
             actual_logged_users=0,
             password="test"
         )
-
+        print(cls.room.password)
     def test_password_hashing(self):
         letters = string.ascii_letters
         random_selector = random.Random()
@@ -73,5 +73,4 @@ class RoomTestCase(TestCase):
 
         with self.assertRaises(IntegrityError):
             room = Room.create_room(**room_data)
-            room.full_clean()
 
