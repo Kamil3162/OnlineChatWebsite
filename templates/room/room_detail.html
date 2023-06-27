@@ -37,40 +37,68 @@
     <div>
         <form id="message-form">
             <input type="text" id="message-input">
-            <button type="submit">Send</button>
+            <button type="submit" onclick="buttonClick()">Send</button>
         </form>
     </div>
 
     <script>
+
+
         var url = window.location.href;
         var parts = url.split('/');
         const room_id = parts[parts.length - 2];
-        var userId = "{{ user_id | escape }}";
+        var userId = "{{ request.user.id }}";
+        console.log("to jest testowanie chatu python JS");
+        console.log(userId);
         var socket = new WebSocket(`ws://localhost:8000/ws/server-url/${room_id}/`);
 
         socket.onmessage = function (e) {
             let data = JSON.parse(e.data);
-            const messageContainer = document.getElementById('messages-container');
-            messageContainer.insertAdjacentHTML('beforeend',
-                    `<div class="message-container">
-                        <p>${data.message}</p>
-                    </div>`);
             console.log(data);
+            const messageContainer = document.getElementById('messages-container');
+            if (userId == data.userId){
+                messageContainer.insertAdjacentHTML('beforeend',
+                    `<div class="message-container">
+                        <div class="your-messages">
+                            <div class="message-display">
+                                <p>${data.message}</p>
+                            </div>
+                        </div>
+                    </div>`);
+            }
+            else{
+                messageContainer.insertAdjacentHTML('beforeend',
+                    `<div class="message-container">
+                        <div class="others-messages">
+                            <div class="message-display">
+                                <p>${data.message}</p>
+                            </div>
+                            <p>${data.sender_data}</p>
+                        </div>
+                    </div>`);
+            }
+
+            console.log(userId);
+            console.log(data.userId);
         };
 
         document.querySelector('#message-form').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent form submission
             var inputField = document.querySelector("#message-input");
-            var message = inputField.value;
-            console.log(message);
-
-            socket.send(JSON.stringify({
-                message: message,
-                room_id: room_id,
-                user_id: userId
-            }));
-
+            var message = inputField.value.trim();  // remove all white spaces
             inputField.value = '';
+            console.log(message);
+            if (message != ""){
+                socket.send(
+                    JSON.stringify({
+                        message: message,
+                        room_id: room_id,
+                        user_id: userId
+                    }));
+            }
+            else {
+                console.log("nie udalo sie wyslac wiadomosci");
+            }
         });
 
         socket.onerror = function (error) {

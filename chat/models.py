@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager,
@@ -18,6 +20,7 @@ class Room(models.Model):
     actual_logged_users = models.IntegerField(default=0)
     password = models.CharField(max_length=200)
     # objects = RoomManager()
+    room_photo = models.ImageField(null=True, upload_to='images/')
 
     @classmethod
     def create_room(cls, *args, **kwargs):
@@ -41,6 +44,7 @@ class Room(models.Model):
         else:
             raise Exception("You can't remove user, cant minus from 0")
         await self.save_async()
+
     @database_sync_to_async
     def save_async(self, force_insert=False,
                   force_update=False, using=None, update_fields=None):
@@ -71,7 +75,12 @@ class UserApp(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['password']
 
     def __str__(self):
-        return f"user {self.id}"
+        '''
+        Returns: None
+            This function had been changed on only self.id
+            Previous it was {user self.id}
+        '''
+        return str(self.id)
 
 class Message(models.Model):
     sender = models.ForeignKey(UserApp, null=False, on_delete=models.CASCADE)
@@ -82,4 +91,12 @@ class Message(models.Model):
     def __str__(self):
         return f"Message {self.room} {self.sender}"
 
+class RoomLogs(models.Model):
+    user = models.ForeignKey(UserApp, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    data_joined = models.DateTimeField(default=datetime.datetime.now())
+    data_left = models.DateTimeField(default=None, blank=True, null=True)
+
+    def __str__(self):
+        return f"Object of RoomUsers user_id:{self.user} room_id:{self.room}"
 
