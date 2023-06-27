@@ -107,6 +107,9 @@ class RoomView(DetailView):
         return render(request, template_name=self.template_name,
                       context={'form': form})
 
+    def generate_joined_users(self):
+        pass
+
 
 class RoomsView(ListView):
     template_name = 'room/all_rooms.html'

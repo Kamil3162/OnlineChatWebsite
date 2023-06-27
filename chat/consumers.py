@@ -3,16 +3,17 @@ from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from . import models
 import random
-from channels.generic.websocket import (
-    AsyncWebsocketConsumer
-)
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.consumer import SyncConsumer, AsyncConsumer
 import json
 import time
 from channels.db import database_sync_to_async
 from django.core.cache import cache
+from django.db import IntegrityError
+
 
 class WSConsumer(AsyncWebsocketConsumer):
+    user_cache = {}
 
     async def connect(self, *args, **kwargs):
         room_id = self.scope['url_route']['kwargs']['pk']
@@ -32,8 +33,6 @@ class WSConsumer(AsyncWebsocketConsumer):
     def get_room_name(self, id):
         return models.Room.objects.get(pk=id)
 
-
-
     @database_sync_to_async
     def save_message(self, userid, roomid, message):
         try:
@@ -49,7 +48,7 @@ class WSConsumer(AsyncWebsocketConsumer):
                 message_content=message
             )
 
-            room_users = models.RoomUsers.objects.create(
+            room_logs = self.insert_Room_log(
                 user=user,
                 room=self.room
             )
@@ -94,7 +93,8 @@ class WSConsumer(AsyncWebsocketConsumer):
         room_id = text_data1['room_id']
         message = text_data1['message']
         print(user_id, room_id, message)
-        message_body = json.loads(await self.save_message(user_id, room_id, message))
+        message_body = json.loads(
+            await self.save_message(user_id, room_id, message))
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -111,20 +111,45 @@ class WSConsumer(AsyncWebsocketConsumer):
         user_id = event['userId']
         sender_data = event['sender_data']
         await self.send(text_data=json.dumps({
-            'type':'chat',
-            'message':message,
+            'type': 'chat',
+            'message': message,
             'userId': user_id,
             'sender_data': sender_data
         }))
 
     async def send_response(self, text_data=None):
         print("Wyslano wiadomosc do server ciesz sie", flush=True)
-        response = json.dumps({"message":text_data})
+        response = json.dumps({"message": text_data})
         await self.send(response)
 
     @database_sync_to_async
-    def get_user_information(self, userid):
-        return models.UserApp.objects.get(pk=userid)
+    def get_user_information(self, userid: int):
+        try:
+            print(self.user_cache)
+            return self.user_cache[userid]
+        except KeyError:
+            print("Key doesnt exist")
+            user = models.UserApp.objects.get(pk=userid)
+            self.user_cache[userid] = user
+            return user
+
+    def insert_Room_log(self, user: models.UserApp, room: models.RoomLogs):
+        print("to jest insert ")
+        try:
+            room_log_obj = models.RoomLogs.objects.get(
+                user=user,
+                room=room
+            )
+            print("esa")
+        except models.RoomLogs.DoesNotExist:
+            room_log = models.RoomLogs.objects.create(
+                user=user,
+                room=room
+            )
+            print("Object created successfully.")
+        else:
+            print("Object already exist.")
+
 
 '''
 class ChatConsumer(WebsocketConsumer):
@@ -136,7 +161,7 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name
         )
         self.accept()
-   
+
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)

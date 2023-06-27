@@ -11,6 +11,7 @@
             <button type="submit">Pass</button>
         </form>
     </div>
+    <!--- mozna dodac opcje resign i wypisac ze z czatu zwolnic miejsce innym -->
     <div class="chat-window">
         {{ information }}
         {% for message in messages %}
@@ -42,20 +43,22 @@
     </div>
 
     <script>
+        function scrollToBottom() {
+            const chatWindow = document.querySelector('.chat-window');
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
 
-
+        const messageContainer = document.getElementById('messages-container');
         var url = window.location.href;
         var parts = url.split('/');
         const room_id = parts[parts.length - 2];
         var userId = "{{ request.user.id }}";
-        console.log("to jest testowanie chatu python JS");
-        console.log(userId);
         var socket = new WebSocket(`ws://localhost:8000/ws/server-url/${room_id}/`);
+        window.addEventListener('load', scrollToBottom);
 
         socket.onmessage = function (e) {
             let data = JSON.parse(e.data);
             console.log(data);
-            const messageContainer = document.getElementById('messages-container');
             if (userId == data.userId){
                 messageContainer.insertAdjacentHTML('beforeend',
                     `<div class="message-container">
@@ -76,8 +79,9 @@
                             <p>${data.sender_data}</p>
                         </div>
                     </div>`);
-            }
 
+            }
+            scrollToBottom();
             console.log(userId);
             console.log(data.userId);
         };
