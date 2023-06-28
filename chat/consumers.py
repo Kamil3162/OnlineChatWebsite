@@ -13,7 +13,7 @@ from django.db import IntegrityError
 
 
 class WSConsumer(AsyncWebsocketConsumer):
-    user_cache = {}
+    _user_cache = {}
 
     async def connect(self, *args, **kwargs):
         room_id = self.scope['url_route']['kwargs']['pk']
@@ -149,6 +149,18 @@ class WSConsumer(AsyncWebsocketConsumer):
             print("Object created successfully.")
         else:
             print("Object already exist.")
+    @property
+    def user_cache(self):
+        return self._user_cache
+    @user_cache.setter
+    def user_cache(self, roomlogs):
+        print(self._user_cache)
+        for roomlog in roomlogs:
+            userid = roomlog.user_id
+            try:
+                self.user_cache[userid] = models.UserApp.objects.get(userid)
+            except models.UserApp.DoesNotExist:
+                raise Exception("Object does not exist")
 
 
 '''

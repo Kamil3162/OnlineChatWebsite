@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
@@ -9,13 +11,14 @@ from django.views.generic import (
     DeleteView,
     FormView,
 )
-from .models import UserApp, Room, Message
+from .models import UserApp, Room, Message, RoomLogs
 from django.contrib.auth import get_user_model
 from . import forms
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.db.models import Q
-
+from django.core import serializers
+from django.core.serializers.json import DjangoJSONEncoder
 
 class IndexView(View):
     def get(self, request):
@@ -81,13 +84,18 @@ class RoomView(DetailView):
         try:
             form = forms.RoomLoginBasedModel(request.POST)
             password_input = request.POST.get('password')
+            room_log = RoomLogs.objects.filter(room=kwargs.get('pk')).exclude().values('id', 'room_id', 'user_id')
+            print(room_log)
+            room_log_data = list(room_log.values())
+            room_log_json = json.dumps(room_log_data, cls=DjangoJSONEncoder)
             if form.is_valid():
                 room = self.get_object()
                 if form.check_password(room, password_input):
                     context = {
                         'messages': Message.objects.filter(room=room),
                         'information': "Properly log in",
-                        'user_id' : request.user.pk
+                        'user_id' : request.user.pk,
+                        'room_detail': room_log_json
                     }
                     return render(request, template_name=self.template_name,
                                   context=context)
@@ -107,8 +115,6 @@ class RoomView(DetailView):
         return render(request, template_name=self.template_name,
                       context={'form': form})
 
-    def generate_joined_users(self):
-        pass
 
 
 class RoomsView(ListView):
