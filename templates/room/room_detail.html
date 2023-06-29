@@ -14,25 +14,32 @@
     <!--- mozna dodac opcje resign i wypisac ze z czatu zwolnic miejsce innym -->
     <div class="chat-window">
         {{ information }}
-        {% for message in messages %}
-            {% if message.sender_id == request.user.id %}
-                <div class="your-messages">
-                    <!-- {{ request.user.username}} -->
-                    <div class="message-display">
-                        {{ message.message_content }}<br/>
-                    </div>
-                </div>
-            {% else %}
-                <div class="others-messages">
-                    <!-- {{ request.user.username}} -->
-                    <div class="message-display">
-                        {{ message.message_content }}<br/>
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
         <div id="messages-container">
-            <!-- Chat messages will be dynamically added here -->
+            {% for message in messages %}
+            <div class="message-container">
+                <div class="message-row">
+                    {% if message.sender_id == request.user.id %}
+                        <div class="user-actual">
+                            {{ request.user.username }}
+                        </div>
+                    <div class="your-messages">
+                        <div class="message-display">
+                            {{ message.message_content }}
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="other-user">
+                            {{ message.sender.username }}
+                        </div>
+                    <div class="others-messages">
+                        <div class="message-display">
+                            {{ message.message_content }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
     <div>
@@ -45,20 +52,18 @@
 
 </div>
 <script>
-    console.log("esa");
-
     function scrollToBottom() {
         const chatWindow = document.querySelector('.chat-window');
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
-
     const messageContainer = document.getElementById('messages-container');
     var roomDetailJson = JSON.parse('{{ room_detail|escapejs }}');
-    console.log(roomDetailJson);
+
     var url = window.location.href;
     var parts = url.split('/');
     const room_id = parts[parts.length - 2];
     var userId = "{{ request.user.id }}";
+
     var socket = new WebSocket(`ws://localhost:8000/ws/server-url/${room_id}/`);
     window.addEventListener('load', scrollToBottom);
 
@@ -67,17 +72,19 @@
         console.log(data);
         if (userId == data.userId) {
             messageContainer.insertAdjacentHTML('beforeend',
-                    `<div class="message-container">
+            `<div class="message-container">
                  <div class="your-messages">
-                     <div class="message-display">
-                         <p>${data.message}</p>
+                     <div class="user">
+                        ${data.sender_data}
                      </div>
-                     <p>${data.sender_data}</p>
+                     <div class="message-display">
+                         ${data.message}
+                     </div>
                  </div>
              </div>`);
         } else {
             messageContainer.insertAdjacentHTML('beforeend',
-                    `<div class="message-container">
+            `<div class="message-container">
                  <div class="others-messages">
                     <div id="user">
                         <p>${data.sender_data}</p>
@@ -87,7 +94,6 @@
                      </div>
                  </div>
              </div>`);
-
         }
         scrollToBottom();
         console.log(userId);
@@ -115,6 +121,45 @@
     socket.onerror = function (error) {
         console.log(error);
     };
+
+    const messageContainers = document.querySelectorAll('.message-container');
+
+    // Loop through the message containers (excluding the last one)
+    for (let i = 0; i < messageContainers.length - 1; i++) {
+        const currentContainer = messageContainers[i];
+        const nextContainer = messageContainers[i + 1];
+
+        const currentUser = currentContainer.querySelector('.user-actual');
+        const nextUser = nextContainer.querySelector('.user-actual');
+
+        const currentOther = currentContainer.querySelector('.other-user');
+        const nextOther = nextContainer.querySelector('.other-user');
+
+        const currentContent = currentUser ? currentUser.textContent.trim() : '';
+        const nextContent = nextUser ? nextUser.textContent.trim() : '';
+
+        const currentOtherContent = currentOther ? currentOther.textContent.trim() : '';
+        const nextOtherContent = nextOther ? nextOther.textContent.trim() : '';
+
+        if (currentContent === nextContent) {
+            if (nextUser) {
+                nextUser.style.display = 'none';
+                const yourMessage = currentContainer.querySelector('.message-display');
+                yourMessage.style.marginBottom = '1px';
+                yourMessage.style.marginTop = '1px';
+            }
+        }
+
+        if (currentOtherContent === nextOtherContent) {
+            if (nextOther) {
+                nextOther.style.display = 'none';
+                const otherMessage = currentContainer.querySelector('.message-display');
+                otherMessage.style.marginBottom = '1px';
+                otherMessage.style.marginTop = '1px';
+            }
+        }
+    }
+
 </script>
 
 {% endblock %}

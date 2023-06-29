@@ -10,7 +10,7 @@ import time
 from channels.db import database_sync_to_async
 from django.core.cache import cache
 from django.db import IntegrityError
-
+from django.contrib.auth import get_user
 
 class WSConsumer(AsyncWebsocketConsumer):
     _user_cache = {}

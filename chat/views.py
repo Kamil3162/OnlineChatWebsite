@@ -115,8 +115,6 @@ class RoomView(DetailView):
         return render(request, template_name=self.template_name,
                       context={'form': form})
 
-
-
 class RoomsView(ListView):
     template_name = 'room/all_rooms.html'
     model = Room
