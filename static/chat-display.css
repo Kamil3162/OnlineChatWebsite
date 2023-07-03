@@ -1,16 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Dosis:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Kulim+Park:wght@200&family=Nunito:wght@300&display=swap');
+/*
+  font-family: 'Nunito', sans-serif;
+ */
+@import url('https://fonts.googleapis.com/css2?family=Mulish&display=swap');
 div.chat-messages-container{
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;
-}
-div.rooms{
-  display: flex;
-  flex-wrap: wrap;
-    background-color: white;
-    gap: 10px;
 }
 
 .wave {
@@ -88,4 +86,76 @@ input[name="password"]{
 }
 input[name="name"]{
   margin-left:60px;
+}
+
+/**
+  part of room and rooms display
+ */
+div.rooms{
+  display: flex;
+  flex-direction: column;
+    gap: 10px;
+  margin-top: 60px;
+  margin-left: 30px;
+}
+div.rooms a{
+  display: flex;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+}
+.room{
+  display: flex;
+  flex-direction: row;
+  height: 75px;
+  background-color: inherit;
+  border-radius: 15px;
+}
+.button_style{
+  width: 120px;
+  height: 40px;
+  border-radius: 10px;
+  font-family: 'Dosis', sans-serif;;
+  font-weight: 600;
+  background-color: #ebecee;
+  font-size: 15px;
+  border: none;
+  color: black;
+}
+
+.button_style:hover{
+  background-color: #5E5694;
+}
+.rooms a{
+  text-decoration: none;
+}
+.room:hover{
+  background :linear-gradient(135deg, #243f78, #141c23);
+  transition: background-color 0.3s ease;
+}
+
+.room-photo{
+  margin-right: 60px;
+}
+.room-name{
+  gap: 10px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  color:white;
+  font-family: 'Mulish', sans-serif;
+}
+.random-message{
+  margin-right: 15px;
+  color: #a3a1a1;
+  font-family: 'Nunito', sans-serif;
+
+}
+.message-title-container{
+  flex-direction: column;
+}
+.room-logged-users{
+  margin-right: 15px;
+}
+.room-maximum-users{
+  margin-right: 50px;
 }

@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@200&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@500&display=swap');
+
 body{
     background-color: #111111;
     width: 100%;
@@ -40,6 +41,10 @@ div.icon{
     margin-left: 30px;
     margin-bottom: 60px;
     text-decoration: none;
+}
+div.icon a{
+    text-decoration: none;
+    color: white;
 }
 div.icon:hover{
     border-radius: 10px;
@@ -100,8 +105,11 @@ div.chat-window {
     overflow-y: scroll;
     border: 1px solid #ccc;
     padding: 10px;
+    margin-top: 20px;
 }
-
+.hidden{
+    display: none;
+}
 div.message-container {
     display: flex;
     flex-direction: column-reverse; /* Display child elements vertically in reverse order */
@@ -149,4 +157,28 @@ div.other-user{
     font-size: 12px;
     font-weight: 600;
     width: 60px;
+}
+.custom-from{
+    margin-top: 5px;
+}
+.custom-from input[type="text"]{
+    border-radius: 15px;
+    padding: 5px;
+    background-color: rgb(67, 70, 71);
+    border: none;
+}
+.custom-from button[type="submit"]{
+    border-radius: 15px;
+    background-color: rgb(42, 101, 127);
+    color: white;
+    border: 1px solid black;
+    font-family: 'Dosis', sans-serif;
+    padding: 5px;
+    width: 50px;
+}
+.custom-from button:hover{
+    background-color: #4ac1f7;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in-out;
 }

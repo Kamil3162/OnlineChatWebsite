@@ -4,15 +4,15 @@
 <div>
     <link rel="stylesheet" href="{% static 'global.css' %}">
     <link rel="stylesheet" href="{% static 'right-sidebar.css' %}">
-    <div>
+    <div class="password-entry {% if proper_password %}hidden{% endif %}">
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Pass</button>
+            <button class="button_style" type="submit">Pass</button>
         </form>
     </div>
     <!--- mozna dodac opcje resign i wypisac ze z czatu zwolnic miejsce innym -->
-    <div class="chat-window">
+    <div class="chat-window {% if not proper_password %}hidden{% endif %}">
         {{ information }}
         <div id="messages-container">
             {% for message in messages %}
@@ -43,17 +43,19 @@
         </div>
     </div>
     <div>
-        <form id="message-form">
+        <form id="message-form" class="custom-from {% if not proper_password %}hidden{% endif %}">
             <input type="text" id="message-input">
-            <button type="submit" onclick="scrollToBottom()">Send</button>
+            <button class="button_style" type="submit" onclick="scrollToBottom()">Send</button>
         </form>
     </div>
 
 
 </div>
 <script>
+    const chatWindow = document.querySelector('.chat-window');
+    var properPassword = "{{ proper_password|escape}}";
+    const messageForm = document.getElementById('message-form');
     function scrollToBottom() {
-        const chatWindow = document.querySelector('.chat-window');
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
     const messageContainer = document.getElementById('messages-container');
@@ -74,7 +76,7 @@
             messageContainer.insertAdjacentHTML('beforeend',
             `<div class="message-container">
                  <div class="your-messages">
-                     <div class="user">
+                     <div class="user-actual">
                         ${data.sender_data}
                      </div>
                      <div class="message-display">
@@ -86,7 +88,7 @@
             messageContainer.insertAdjacentHTML('beforeend',
             `<div class="message-container">
                  <div class="others-messages">
-                    <div id="user">
+                    <div class="other-user">
                         <p>${data.sender_data}</p>
                     </div>
                      <div class="message-display">

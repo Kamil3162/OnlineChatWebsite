@@ -16,10 +16,9 @@ from django.contrib.auth import get_user_model
 from . import forms
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.db.models import Q
+from django.db.models import Q, F, OuterRef,Subquery
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
-
 class IndexView(View):
     def get(self, request):
         print(request.user.username)
@@ -95,7 +94,8 @@ class RoomView(DetailView):
                         'messages': Message.objects.filter(room=room),
                         'information': "Properly log in",
                         'user_id' : request.user.pk,
-                        'room_detail': room_log_json
+                        'room_detail': room_log_json,
+                        'proper_password': True
                     }
                     return render(request, template_name=self.template_name,
                                   context=context)
@@ -121,8 +121,23 @@ class RoomsView(ListView):
     context_object_name = 'all_rooms'
 
     def get_queryset(self):
-        return super().get_queryset()
-
+        '''
+        Returns:
+            SELECT room.*, (SELECT message_content
+                FROM message
+                WHERE message.room_id = room.id
+                ORDER BY RANDOM()
+                LIMIT 1) AS random_message
+                FROM room;
+            Zwraca po jednej wiadomosci do kazdego room .
+            Wiadomosc jest losowa
+        '''
+        queryset = super().get_queryset()
+        random_message_subquery = Message.objects.filter(
+            room=OuterRef('pk')).order_by('?')[:1]
+        queryset = queryset.annotate(random_message=Subquery(
+            random_message_subquery.values('message_content')))
+        return queryset
 
 def lobby(request):
     return render(request, 'chat/lobby.html')
