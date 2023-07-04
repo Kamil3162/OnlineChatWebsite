@@ -19,6 +19,7 @@ from django.shortcuts import redirect
 from django.db.models import Q, F, OuterRef,Subquery
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
+from django.contrib.auth.decorators import login_required
 class IndexView(View):
     def get(self, request):
         print(request.user.username)
@@ -73,7 +74,7 @@ class RoomCreateView(CreateView):
         return super().form_valid(
             form)  # equivalet return super(RoomCreate, self).form_valid(form)
 
-
+@login_required
 class RoomView(DetailView):
     template_name = 'room/room_detail.html'
     model = Room
@@ -111,10 +112,14 @@ class RoomView(DetailView):
     def get(self, request, *args, **kwargs):
         print(request.user)
         print('This is the GET method')
-        form = forms.RoomLoginBasedModel()
-        return render(request, template_name=self.template_name,
-                      context={'form': form})
 
+        context = {
+            'form': forms.RoomLoginBasedModel(),
+            'proper_password':False
+        }
+        return render(request, template_name=self.template_name,
+                      context=context)
+@method_decorator(login_required, name='dispatch')
 class RoomsView(ListView):
     template_name = 'room/all_rooms.html'
     model = Room

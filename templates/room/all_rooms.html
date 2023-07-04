@@ -2,6 +2,7 @@
 {% load static %}
 {% block chats %}
 <link rel="stylesheet" href="{% static 'chat-display.css' %}">
+<link rel="stylesheet" href="{% static 'global.css' %}">
 <div class="rooms">
     {% for room in all_rooms %}
     <div class="room">
@@ -10,10 +11,8 @@
             <div class="room-name">{{ room.name }}</div>
             <div class="random-message">{{ room.random_message }}</div>
         </div>
-        <div class="room-logged-users">Active{{ room.actual_logged_users }}   </div>
-        <div class="room-maximum-users">{{ room.maximum_user }}</div>
         <a href="{% url 'room_detail' room.pk %}">
-            <button>Join</button>
+            <button class="button_style">Join</button>
         </a>
     </div>
     {% endfor %}

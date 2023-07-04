@@ -106,6 +106,8 @@ div.chat-window {
     border: 1px solid #ccc;
     padding: 10px;
     margin-top: 20px;
+    width: 90%;
+    justify-content: center;
 }
 .hidden{
     display: none;

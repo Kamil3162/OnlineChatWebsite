@@ -4,6 +4,7 @@
 <div>
     <link rel="stylesheet" href="{% static 'global.css' %}">
     <link rel="stylesheet" href="{% static 'right-sidebar.css' %}">
+    <link rel="stylesheet" href="{% static 'chat-display.css' %}">
     <div class="password-entry {% if proper_password %}hidden{% endif %}">
         <form method="post">
             {% csrf_token %}
@@ -53,7 +54,8 @@
 </div>
 <script>
     const chatWindow = document.querySelector('.chat-window');
-    var properPassword = "{{ proper_password|escape}}";
+    var properPassword = "{{ proper_password }}";
+
     const messageForm = document.getElementById('message-form');
     function scrollToBottom() {
         chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -162,6 +164,9 @@
         }
     }
 
+    if (!properPassword){
+
+    }
 </script>
 
 {% endblock %}

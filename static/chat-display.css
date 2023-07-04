@@ -136,6 +136,7 @@ div.rooms a{
 
 .room-photo{
   margin-right: 60px;
+  width: 70px;
 }
 .room-name{
   gap: 10px;
@@ -152,10 +153,30 @@ div.rooms a{
 }
 .message-title-container{
   flex-direction: column;
+  width: 300px;
 }
 .room-logged-users{
   margin-right: 15px;
+  background-color: green;
+  height: 20px;
 }
 .room-maximum-users{
   margin-right: 50px;
+}
+
+.password-entry{
+  margin-top: 30%;
+  margin-left: 40%;
+  /* background-color: #2f2b2b; */
+  height: 150px;
+  width: 200px;
+}
+.password-entry label{
+  color: white;
+  font-family: 'Nunito', sans-serif;
+}
+.password-entry input{
+  border-radius: 15px;
+  height: 40px;
+  margin-left: 0;
 }
