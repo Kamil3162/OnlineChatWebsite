@@ -105,6 +105,7 @@ class WSConsumer(AsyncWebsocketConsumer):
             }
         )
         print("wysłano wiadomosc naura")
+        print("----------------------")
 
     async def chat_message(self, event):
         message = event['message']

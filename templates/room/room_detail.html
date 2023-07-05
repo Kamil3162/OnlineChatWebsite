@@ -57,9 +57,12 @@
     var properPassword = "{{ proper_password }}";
 
     const messageForm = document.getElementById('message-form');
+
     function scrollToBottom() {
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
+
+
     const messageContainer = document.getElementById('messages-container');
     var roomDetailJson = JSON.parse('{{ room_detail|escapejs }}');
 
@@ -77,24 +80,29 @@
         if (userId == data.userId) {
             messageContainer.insertAdjacentHTML('beforeend',
             `<div class="message-container">
-                 <div class="your-messages">
-                     <div class="user-actual">
-                        ${data.sender_data}
-                     </div>
-                     <div class="message-display">
-                         ${data.message}
+                 <div class="message-row">
+                    <div class="your-messages">
+                         <div class="user-actual">
+                            ${data.sender_data}
+                         </div>
+                         <div class="message-display">
+                             ${data.message}
+                         </div>
                      </div>
                  </div>
+
              </div>`);
         } else {
             messageContainer.insertAdjacentHTML('beforeend',
             `<div class="message-container">
-                 <div class="others-messages">
-                    <div class="other-user">
-                        <p>${data.sender_data}</p>
-                    </div>
-                     <div class="message-display">
-                         <p>${data.message}</p>
+                <div class="message-row">
+                     <div class="others-messages">
+                        <div class="other-user">
+                            <p>${data.sender_data}</p>
+                        </div>
+                         <div class="message-display">
+                             <p>${data.message}</p>
+                         </div>
                      </div>
                  </div>
              </div>`);
@@ -163,10 +171,27 @@
             }
         }
     }
-
-    if (!properPassword){
-
+    /*
+        Part responsible for remove user-actual after send message or something like that
+     */
+    var button = document.getElementById('button_style');
+    button.onclick = hideUser;
+    function hideUser() {
+        console.log("elo");
+        var lastSendedMessage = messageContainers.length - 1;
+        var sendedMessageInfo = messageContainers[lastSendedMessage];
+        var actualUserClass = sendedMessageInfo.querySelector('.user-actual');
+        var otherUserClass = sendedMessageInfo.querySelector('.other-user');
+        if (otherUserClass) {
+            var userClassView = messageContainers[lastSendedMessage + 1].querySelector('.user-actual');
+            var sdClassView = messageContainers[lastSendedMessage + 1].querySelector('.message-display');
+            console.log(sdClassView.textContent);
+            sdClassView.style.display = 'none';
+        }
+        console.log(actualUserClass);
     }
+
+
 </script>
 
 {% endblock %}

@@ -1,5 +1,5 @@
 import json
-
+import time
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
@@ -19,7 +19,11 @@ from django.shortcuts import redirect
 from django.db.models import Q, F, OuterRef,Subquery
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
+from django.core.cache import cache
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from functools import wraps
+
 class IndexView(View):
     def get(self, request):
         print(request.user.username)
@@ -74,11 +78,59 @@ class RoomCreateView(CreateView):
         return super().form_valid(
             form)  # equivalet return super(RoomCreate, self).form_valid(form)
 
-@login_required
+
+
 class RoomView(DetailView):
     template_name = 'room/room_detail.html'
     model = Room
     context_object_name = 'room'
+
+    def spam_limit(function):
+        @wraps(function)
+        def wrapper(self, request, *args, **kwargs):
+            RATE_LIMIT_DURATION = 60
+            MAX_MESSAGE_AMOUNT = 20
+            # we get ip of user
+            ip_address = request.META.get("REMOTE_ADDR")
+            current_time = time.time()
+            print("to jest wykjonywanie wrappera")
+            last_submission_time, message_count = self.get_rate_limit_data(ip_address)
+            print(last_submission_time, message_count)
+            elapsed_time = current_time - last_submission_time
+
+            if elapsed_time > RATE_LIMIT_DURATION or message_count > MAX_MESSAGE_AMOUNT:
+                return HttpResponse("Rate limit is exceedd", status=429)
+
+            if elapsed_time >= RATE_LIMIT_DURATION:
+                rate_limit_data = (current_time, 1)
+            else:
+                rate_limit_data = (last_submission_time, message_count + 1)
+
+            self.update_limit_data(ip_address, rate_limit_data)
+
+            return function(self, request, *args, **kwargs)
+
+        return wrapper
+
+    def get_rate_limit_data(self, user_ip):
+        # request.META.get(REMOTE_ADDR)
+        cache_key = f'rate_limit_{user_ip}'
+        print("set cache")
+        print(cache_key)
+        rate_limit_data = cache.get(cache_key)
+        if rate_limit_data is None:
+            return (time.time(), 0)
+        return rate_limit_data
+
+    def update_limit_data(self, user_ip, rate_limit_data):
+        try:
+            cache_key = f'rate_limit_{user_ip}'
+            print("update cachce")
+            print(cache_key)
+            cache.set(cache_key, rate_limit_data, 60)
+        except Exception as e:
+            print(str(e))
+            raise e("Something going bad")
 
     def post(self, request, *args, **kwargs):
         try:
@@ -119,7 +171,6 @@ class RoomView(DetailView):
         }
         return render(request, template_name=self.template_name,
                       context=context)
-@method_decorator(login_required, name='dispatch')
 class RoomsView(ListView):
     template_name = 'room/all_rooms.html'
     model = Room
