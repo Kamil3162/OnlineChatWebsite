@@ -60,6 +60,7 @@
 
     function scrollToBottom() {
         chatWindow.scrollTop = chatWindow.scrollHeight;
+        hideUser();
     }
 
 
@@ -174,21 +175,26 @@
     /*
         Part responsible for remove user-actual after send message or something like that
      */
-    var button = document.getElementById('button_style');
-    button.onclick = hideUser;
     function hideUser() {
-        console.log("elo");
-        var lastSendedMessage = messageContainers.length - 1;
-        var sendedMessageInfo = messageContainers[lastSendedMessage];
-        var actualUserClass = sendedMessageInfo.querySelector('.user-actual');
-        var otherUserClass = sendedMessageInfo.querySelector('.other-user');
+        var lastMessageContainer = document.querySelector('.message-container:last-child');
+        var actualUserClass = lastMessageContainer.querySelector('.user-actual');
+        var otherUserClass = lastMessageContainer.querySelector('.other-user');
+
         if (otherUserClass) {
-            var userClassView = messageContainers[lastSendedMessage + 1].querySelector('.user-actual');
-            var sdClassView = messageContainers[lastSendedMessage + 1].querySelector('.message-display');
-            console.log(sdClassView.textContent);
-            sdClassView.style.display = 'none';
+            var nextContainer = lastMessageContainer.nextElementSibling;
+            var nextUserClass = nextContainer.querySelector('.user-actual');
+            var nextMessageDisplay = nextContainer.querySelector('.message-display');
+
+            if (nextUserClass && nextMessageDisplay) {
+                nextUserClass.style.display = 'none';
+                nextMessageDisplay.style.marginBottom = '1px';
+                nextMessageDisplay.style.marginTop = '1px';
+            }
         }
-        console.log(actualUserClass);
+
+        if (actualUserClass) {
+            actualUserClass.style.display = 'none';
+        }
     }
 
 
