@@ -175,7 +175,15 @@
     /*
         Part responsible for remove user-actual after send message or something like that
      */
+
     function hideUser() {
+        var messageLenght = document.querySelectorAll('.message-container');
+        var length = messageLenght.length;
+        var latesMessageContainer = messageLenght[length-2];
+
+        var latestUser = latesMessageContainer.querySelector('.user-actual');
+        var latestUser1 = latesMessageContainer.querySelector('.other-user');
+
         var lastMessageContainer = document.querySelector('.message-container:last-child');
         var actualUserClass = lastMessageContainer.querySelector('.user-actual');
         var otherUserClass = lastMessageContainer.querySelector('.other-user');
@@ -183,20 +191,18 @@
         if (otherUserClass) {
             var nextContainer = lastMessageContainer.nextElementSibling;
             var nextUserClass = nextContainer.querySelector('.user-actual');
+            var nextOtherUserClass = nextContainer.querySelector('.other-user');
             var nextMessageDisplay = nextContainer.querySelector('.message-display');
 
-            if (nextUserClass && nextMessageDisplay) {
-                nextUserClass.style.display = 'none';
+            if (nextUserClass && nextMessageDisplay || nextOtherUserClass && nextMessageDisplay) {
+                // console.log("esa-test");
                 nextMessageDisplay.style.marginBottom = '1px';
                 nextMessageDisplay.style.marginTop = '1px';
             }
-        }
-
-        if (actualUserClass) {
+        } else if (latestUser) {
             actualUserClass.style.display = 'none';
         }
     }
-
 
 </script>
 

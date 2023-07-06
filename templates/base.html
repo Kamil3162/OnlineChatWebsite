@@ -14,8 +14,13 @@
                 {% if request.session.username %}
                 <p>Witaj {{ request.session.username }}</p>
                     <a href="{% url 'logout' %}">
-                <button>Wyloguj</button>
-            </a>
+                        <button class="log-btn">Wyloguj</button>
+                    </a>
+                {% else %}
+                <br/>
+                <a href="{% url 'login' %}">
+                        <button class="log-btn">Zaloguj</button>
+                </a>
                 {% endif %}
             </div>
             <div class="icon-control">

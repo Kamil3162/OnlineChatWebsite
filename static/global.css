@@ -127,6 +127,7 @@ div.your-messages {
 div.others-messages {
     display: flex;
     justify-content: flex-start;
+    flex-direction: column;
     /* Additional styles for others messages */
 }
 
@@ -144,6 +145,7 @@ div.message-display {
     max-height: 150px;
     overflow: hidden;
     word-wrap: break-word;
+    width: fit-content;
 }
 div.user-actual{
     display: flex;
@@ -183,4 +185,29 @@ div.other-user{
     transition-property: background-color;
     transition-duration: 0.3s;
     transition-timing-function: ease-in-out;
+}
+
+button.log-btn{
+    background-color: inherit;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    height: 40px;
+    width: 60px;
+    padding: 10px;
+    margin-top: 30px;
+    margin-bottom: 60px;
+    border: none;
+    color: white;
+}
+button.log-btn:hover{
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    background-color: #1ac90a;
+    box-shadow: 1px 2px 13px 4px white;
+    color: black;
+}
+#logo a{
+    text-decoration: none;
 }
