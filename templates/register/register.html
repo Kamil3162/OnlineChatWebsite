@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'login.css' %}">
 </head>
 <body>
     <div class="login-container">
-        <div class="login-input">
+        <div class="reg login-input">
             <h1>Rejestracja</h1>
+            <p>Sign up right now</p>
             <form method="POST" action="{% url 'register' %}">
                 {% csrf_token %}
                 {% for field in form %}

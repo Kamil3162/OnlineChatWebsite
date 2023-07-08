@@ -95,3 +95,31 @@ div.login-container{
 .login-photo img {
     border-radius: 20px;
 }
+
+/* responsive part */
+@media (max-width: 780px){
+    div.login-container{
+        display: block;
+        width: 100%;
+        height: 800px;
+    }
+    div.login-photo{
+        display: none;
+    }
+    div.login-input p{
+        text-align: center;
+    }
+    div.login-input{
+        margin-top: 20%;
+        position: relative;
+        text-align: center;
+
+    }
+    div.login-input h1{
+        font-size: 70px;
+        text-align: center;
+    }
+    .reg h1{
+        font-size: 70px;
+    }
+}

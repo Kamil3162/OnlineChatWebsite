@@ -211,3 +211,18 @@ button.log-btn:hover{
 #logo a{
     text-decoration: none;
 }
+
+@media (max-width: 780px){
+    div.right-sidebar{
+        display: none;
+    }
+    .story-title{
+        font-size: 60px;
+    }
+}
+
+@media (max-width: 940px){
+    div.right-sidebar{
+        display: none;
+    }
+}
