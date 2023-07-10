@@ -212,17 +212,85 @@ button.log-btn:hover{
     text-decoration: none;
 }
 
-@media (max-width: 780px){
-    div.right-sidebar{
-        display: none;
-    }
-    .story-title{
-        font-size: 60px;
-    }
+div.footer{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+    color: black;
+    position: sticky;
+    bottom: 0;
 }
+div.footer-item{
+    flex-grow: 1;
+    width: calc(50% - 10px); /* Adjust the width as needed */
+    margin: 5px;
+}
+div.rights{
 
-@media (max-width: 940px){
-    div.right-sidebar{
-        display: none;
+}
+@media only screen and (max-width: 780px) {
+    div.all-components{
+        display: block;
+    }
+    div.icon-control {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      position: sticky;
+      width: 100%;
+      justify-items: start; /* Updated property */
+        margin-left: 10px;
+    }
+
+    div.logo{
+        margin-bottom: 0px;
+    }
+    div.icon{
+        margin: 0px;
+        border-radius: 15px;
+        color: black;
+        background-color: white;
+        margin-right: 5px;
+        height: 40px;
+        line-height: 25px;
+    }
+    div.icon a{
+        color: black;
+    }
+    div.content{
+        font-size: 15px;
+        width: auto;
+    }
+    div.left-sidebar{
+        width: 100%;
+    }
+    #logo{
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    #logo p,
+    #logo a {
+      flex-basis: 50%;
+      flex-grow: 1;
+      text-align: center;
+    }
+    #logo-actions{
+        flex-basis: 50%;
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        justify-items: self-end;
+    }
+
+    #logo-actions p{
+        font-size: 20px;
+    }
+     #logo-actions button{
+       margin-top: 60px;
+     }
+    #logo-word{
+        flex-basis: 40%;
+        font-size: 50px;
+        margin-left: 20px;
     }
 }

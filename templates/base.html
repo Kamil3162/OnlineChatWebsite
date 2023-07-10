@@ -3,25 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/global.css">
-    <link rel="stylesheet" href="static/right-sidebar.css">
+    <link rel="stylesheet" href="{% static 'right-sidebar.css '%}">
 </head>
 <body>
     <div class="all-components">
         <div class="left-sidebar">
             <div id="logo">
-                KH
-                {% if request.session.username %}
-                <p>Witaj {{ request.session.username }}</p>
+                <div id="logo-word">
+                    <p>KH<p/>
+                </div>
+                <div id="logo-actions">
+                    {% if request.session.username %}
+                    <p>Witaj {{ request.session.username }}</p>
                     <a href="{% url 'logout' %}">
                         <button class="log-btn">Wyloguj</button>
                     </a>
-                {% else %}
-                <br/>
-                <a href="{% url 'login' %}">
+                    {% else %}
+                    <br/>
+                    <a href="{% url 'login' %}">
                         <button class="log-btn">Zaloguj</button>
-                </a>
-                {% endif %}
+                    </a>
+                    {% endif %}
+                </div>
             </div>
             <div class="icon-control">
                 <div class="icon">
@@ -53,6 +58,14 @@
             <div class="bubble right">Ok, Thank you</div>
             <div class="bubble left"> ut labore et dolore magna </div>
             <div class="bubble right">👌</div>
+        </div>
+        <div class="footer">
+            <div class="footer-item rights">
+                fdfdsf
+            </div>
+            <div class="footer-item social-info">
+                fdsfds
+            </div>
         </div>
     </div>
 
