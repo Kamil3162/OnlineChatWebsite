@@ -23,7 +23,7 @@ from django.core.cache import cache
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from functools import wraps
-
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 class IndexView(View):
     def get(self, request):
         print(request.user.username)
@@ -175,6 +175,7 @@ class RoomsView(ListView):
     template_name = 'room/all_rooms.html'
     model = Room
     context_object_name = 'all_rooms'
+    paginate_by = 4
 
     def get_queryset(self):
         '''
@@ -194,6 +195,15 @@ class RoomsView(ListView):
         queryset = queryset.annotate(random_message=Subquery(
             random_message_subquery.values('message_content')))
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(RoomsView, self).get_context_data(**kwargs)
+        context['rooms'] = self.get_queryset()
+        paginator = Paginator(context['rooms'], self.paginate_by)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context['page_obj'] = page_obj
+        return context
 
 def lobby(request):
     return render(request, 'chat/lobby.html')
